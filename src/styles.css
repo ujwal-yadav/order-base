@@ -1,0 +1,276 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Orderbase — Warm conversational commerce
+ * Cream paper background, terracotta primary, ink foreground.
+ * Editorial serif display + clean grotesque body.
+ */
+
+@layer base {
+  @font-face {
+    font-family: "Fraunces";
+    font-style: normal;
+    font-weight: 300 900;
+    font-display: swap;
+    src: url("https://fonts.gstatic.com/s/fraunces/v36/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk.woff2")
+      format("woff2");
+  }
+  @font-face {
+    font-family: "Archivo";
+    font-style: normal;
+    font-weight: 100;
+    font-display: swap;
+    src: url("https://fonts.gstatic.com/s/archivo/v19/k3k6o8UDI-1M0wlSV9XAw6lQkqWY8Q82sJaRE-NWIDdgffTTNDNZ9xdp.woff2")
+      format("woff2-variations");
+  }
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-ink: var(--ink);
+  --color-cream: var(--cream);
+  --color-terracotta: var(--terracotta);
+  --color-clay: var(--clay);
+  --color-sage: var(--sage);
+  --color-mustard: var(--mustard);
+  --color-paper: var(--paper);
+
+  --color-status-pending: var(--status-pending);
+  --color-status-paid: var(--status-paid);
+  --color-status-packed: var(--status-packed);
+  --color-status-shipped: var(--status-shipped);
+  --color-status-delivered: var(--status-delivered);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Brand */
+  --cream: oklch(0.972 0.018 85);
+  --paper: oklch(0.985 0.012 85);
+  --ink: oklch(0.198 0.025 50);
+  --terracotta: oklch(0.628 0.168 38);
+  --clay: oklch(0.74 0.12 45);
+  --sage: oklch(0.72 0.07 155);
+  --mustard: oklch(0.82 0.14 80);
+
+  /* Semantic */
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--terracotta);
+  --primary-foreground: oklch(0.985 0.012 85);
+  --secondary: oklch(0.93 0.02 75);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.94 0.015 80);
+  --muted-foreground: oklch(0.45 0.02 50);
+  --accent: var(--mustard);
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.6 0.21 28);
+  --destructive-foreground: oklch(0.985 0.012 85);
+  --border: oklch(0.88 0.018 70);
+  --input: oklch(0.9 0.018 70);
+  --ring: var(--terracotta);
+
+  /* Order statuses */
+  --status-pending: oklch(0.78 0.13 75);
+  --status-paid: oklch(0.7 0.13 155);
+  --status-packed: oklch(0.7 0.1 220);
+  --status-shipped: oklch(0.62 0.15 280);
+  --status-delivered: oklch(0.55 0.12 155);
+
+  /* Gradients & shadows */
+  --gradient-warm: linear-gradient(135deg, oklch(0.972 0.018 85) 0%, oklch(0.94 0.05 65) 100%);
+  --gradient-sunset: linear-gradient(120deg, var(--terracotta) 0%, var(--mustard) 100%);
+  --gradient-ink: linear-gradient(180deg, var(--ink) 0%, oklch(0.13 0.02 40) 100%);
+  --shadow-soft: 0 1px 2px oklch(0.2 0.05 50 / 0.04), 0 8px 24px oklch(0.2 0.05 50 / 0.06);
+  --shadow-lift: 0 2px 4px oklch(0.2 0.05 50 / 0.05), 0 24px 48px -12px oklch(0.2 0.05 50 / 0.18);
+  --shadow-glow: 0 10px 40px -10px oklch(0.628 0.168 38 / 0.45);
+
+  --chart-1: var(--terracotta);
+  --chart-2: var(--sage);
+  --chart-3: var(--mustard);
+  --chart-4: oklch(0.6 0.13 220);
+  --chart-5: oklch(0.55 0.18 320);
+
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--terracotta);
+  --sidebar-primary-foreground: oklch(0.985 0.012 85);
+  --sidebar-accent: var(--muted);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--terracotta);
+}
+
+.dark {
+  --background: oklch(0.16 0.018 50);
+  --foreground: oklch(0.95 0.015 80);
+  --card: oklch(0.2 0.02 50);
+  --card-foreground: oklch(0.95 0.015 80);
+  --popover: oklch(0.2 0.02 50);
+  --popover-foreground: oklch(0.95 0.015 80);
+  --primary: oklch(0.7 0.16 38);
+  --primary-foreground: oklch(0.16 0.018 50);
+  --secondary: oklch(0.26 0.02 50);
+  --secondary-foreground: oklch(0.95 0.015 80);
+  --muted: oklch(0.24 0.02 50);
+  --muted-foreground: oklch(0.7 0.02 60);
+  --accent: oklch(0.82 0.14 80);
+  --accent-foreground: oklch(0.16 0.018 50);
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.7 0.16 38);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background-color: var(--color-terracotta);
+    color: var(--color-primary-foreground);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-variation-settings:
+      "SOFT" 50,
+      "WONK" 0;
+  }
+  .bg-gradient-warm {
+    background-image: var(--gradient-warm);
+  }
+  .bg-gradient-sunset {
+    background-image: var(--gradient-sunset);
+  }
+  .bg-gradient-ink {
+    background-image: var(--gradient-ink);
+  }
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  .shadow-lift {
+    box-shadow: var(--shadow-lift);
+  }
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  .grain {
+    position: relative;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@keyframes float-up {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+.animate-float {
+  animation: float-up 5s ease-in-out infinite;
+}
+.animate-pop {
+  animation: pop-in 0.5s ease-out both;
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
