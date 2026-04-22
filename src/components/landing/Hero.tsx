@@ -32,7 +32,7 @@ export function Hero() {
             href="#waitlist"
             className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-medium text-cream transition-transform hover:scale-105"
           >
-            Get early access
+            Join Waitlist
             <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </nav>
@@ -102,11 +102,17 @@ export function Hero() {
               className="mt-10 flex items-center gap-4 text-sm text-muted-foreground"
             >
               <div className="flex -space-x-2">
-                {["#E07856", "#D4A24C", "#7FA68B", "#C26B4A"].map((c, i) => (
-                  <div
+                {[
+                  "https://i.pravatar.cc/64?img=5",
+                  "https://i.pravatar.cc/64?img=49",
+                  "https://i.pravatar.cc/64?img=16",
+                  "https://i.pravatar.cc/64?img=44",
+                ].map((src, i) => (
+                  <img
                     key={i}
-                    className="h-8 w-8 rounded-full border-2 border-cream"
-                    style={{ background: c }}
+                    src={src}
+                    alt=""
+                    className="h-8 w-8 rounded-full border-2 border-cream object-cover"
                   />
                 ))}
               </div>
