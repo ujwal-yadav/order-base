@@ -31,14 +31,21 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "OrderBase" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Orderbase — Turn Instagram DMs into structured orders" },
+      {
+        name: "description",
+        content:
+          "Orderbase is the lightweight operational backend for Instagram-first sellers. Track orders, send payment links, and manage customers — all from your DMs.",
+      },
+      { name: "author", content: "Orderbase" },
+      { property: "og:title", content: "Orderbase — Conversational commerce, structured." },
+      {
+        property: "og:description",
+        content:
+          "The operational layer for sellers who run their business through Instagram and WhatsApp DMs.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
