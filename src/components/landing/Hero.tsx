@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import { MessageCircle, ArrowRight, Sparkles } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 import { ChatToOrder } from "./ChatToOrder";
 import { Logo } from "./Logo";
 
 export function Hero() {
+  const { user } = useAuth();
+
   return (
     <section className="relative overflow-hidden grain">
       <div className="absolute inset-0 bg-gradient-warm" />
@@ -28,13 +32,13 @@ export function Hero() {
               Who it's for
             </a>
           </div>
-          <a
-            href="#waitlist"
+          <Link
+            to={user ? "/dashboard" : "/login"}
             className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-medium text-cream transition-transform hover:scale-105"
           >
-            Join Waitlist
+            {user ? "Dashboard" : "Sign in"}
             <ArrowRight className="h-3.5 w-3.5" />
-          </a>
+          </Link>
         </nav>
 
         <div className="mt-16 grid gap-12 lg:mt-24 lg:grid-cols-[1.05fr_1fr] lg:items-center">
