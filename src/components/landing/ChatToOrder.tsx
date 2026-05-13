@@ -15,7 +15,11 @@ export function ChatToOrder() {
       <div className="relative mx-auto w-full max-w-md rounded-[2rem] border border-border bg-paper p-3 shadow-lift">
         <div className="rounded-[1.5rem] bg-cream p-4">
           <div className="flex items-center gap-3 border-b border-border/60 pb-3">
-            <img src="https://i.pravatar.cc/72?img=5" alt="" className="h-9 w-9 rounded-full object-cover" />
+            <img
+              src="https://i.pravatar.cc/72?img=5"
+              alt=""
+              className="h-9 w-9 rounded-full object-cover"
+            />
             <div>
               <div className="text-sm font-semibold">@maya.thrifts</div>
               <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
@@ -66,7 +70,11 @@ export function ChatToOrder() {
           </span>
         </div>
         <div className="mt-3 flex items-center gap-3">
-          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=96&h=96&fit=crop&crop=top" alt="Cream linen co-ord" className="h-12 w-12 rounded-lg object-cover" />
+          <img
+            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=96&h=96&fit=crop&crop=top"
+            alt="Cream linen co-ord"
+            className="h-12 w-12 rounded-lg object-cover"
+          />
           <div className="min-w-0 flex-1">
             <div className="truncate text-sm font-semibold">Cream linen co-ord · M</div>
             <div className="text-xs text-muted-foreground">Aanya · Bangalore</div>

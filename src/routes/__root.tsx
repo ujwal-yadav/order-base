@@ -1,6 +1,5 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-import { Toaster } from "sonner";
-import { AuthProvider } from "@/lib/auth";
+import { getSession, getProfile } from "@/lib/supabase/auth.server";
 
 import appCss from "../styles.css?url";
 
@@ -27,6 +26,15 @@ function NotFoundComponent() {
 }
 
 export const Route = createRootRoute({
+  beforeLoad: async () => {
+    const { user } = await getSession();
+    let profile = null;
+    if (user) {
+      const result = await getProfile();
+      profile = result.profile;
+    }
+    return { user, profile };
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -79,10 +87,5 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return (
-    <AuthProvider>
-      <Outlet />
-      <Toaster position="top-center" richColors />
-    </AuthProvider>
-  );
+  return <Outlet />;
 }

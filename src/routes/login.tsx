@@ -1,31 +1,40 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute, Link, redirect, useRouter } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
-import { toast } from "sonner";
-import { LogIn } from "lucide-react";
-import { useAuth } from "@/lib/auth";
+import { Logo } from "@/components/landing/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Logo } from "@/components/landing/Logo";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { login } from "@/lib/supabase/auth.server";
+
+export const Route = createFileRoute("/login")({
+  beforeLoad: ({ context }) => {
+    const ctx = context as { user: unknown; profile: unknown };
+    if (ctx.user && ctx.profile) {
+      throw redirect({ to: "/dashboard" });
+    }
+    if (ctx.user && !ctx.profile) {
+      throw redirect({ to: "/onboarding" });
+    }
+  },
+  component: LoginPage,
+});
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Please enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-export const Route = createFileRoute("/login")({
-  component: LoginPage,
-});
-
 function LoginPage() {
-  const { signIn } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const {
@@ -37,78 +46,95 @@ function LoginPage() {
   });
 
   const onSubmit = async (data: LoginForm) => {
+    setServerError("");
     setLoading(true);
+
     try {
-      await signIn(data.email, data.password);
-      toast.success("Welcome back!");
-      navigate({ to: "/dashboard" });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to sign in");
+      const result = await login({ data });
+      if (!result.success) {
+        setServerError(result.error);
+        return;
+      }
+      await router.invalidate();
+      await router.navigate({ to: "/dashboard" });
+    } catch {
+      setServerError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="grain flex min-h-screen items-center justify-center bg-gradient-warm px-6">
-      <Card className="w-full max-w-md border-border/50 bg-paper p-8 shadow-lift">
-        <div className="mb-8 flex flex-col items-center">
-          <Link to="/">
-            <Logo className="mb-3 h-10 w-10" />
+    <div className="flex min-h-screen items-center justify-center bg-cream px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        <div className="mb-8 text-center">
+          <Link to="/" className="inline-flex items-center gap-2">
+            <Logo className="h-8 w-8" />
+            <span className="text-2xl font-black tracking-normal">OrderBase</span>
           </Link>
-          <h1 className="font-display text-3xl font-semibold text-ink">Welcome back</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Sign in to your Orderbase account</p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              {...register("email")}
-              className="rounded-lg"
-            />
-            {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
-          </div>
+        <Card className="shadow-lift">
+          <CardHeader className="text-center">
+            <CardTitle className="font-display text-2xl font-semibold">Welcome back</CardTitle>
+            <CardDescription>Sign in to your Orderbase account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  {...register("email")}
+                  disabled={loading}
+                />
+                {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+              </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              {...register("password")}
-              className="rounded-lg"
-            />
-            {errors.password && (
-              <p className="text-sm text-destructive">{errors.password.message}</p>
-            )}
-          </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  {...register("password")}
+                  disabled={loading}
+                />
+                {errors.password && (
+                  <p className="text-sm text-destructive">{errors.password.message}</p>
+                )}
+              </div>
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-full bg-primary text-primary-foreground shadow-glow"
-          >
-            {loading ? (
-              "Signing in..."
-            ) : (
-              <>
-                Sign in <LogIn className="ml-1 h-4 w-4" />
-              </>
-            )}
-          </Button>
-        </form>
+              {serverError && <p className="text-sm text-destructive">{serverError}</p>}
 
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <Link to="/signup" className="font-medium text-primary hover:underline">
-            Sign up
-          </Link>
-        </p>
-      </Card>
+              <Button type="submit" className="w-full rounded-full" disabled={loading}>
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    Sign in
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </form>
+
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              Don&apos;t have an account?{" "}
+              <Link to="/signup" className="font-medium text-primary hover:underline">
+                Sign up
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
+      </motion.div>
     </div>
   );
 }

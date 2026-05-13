@@ -38,14 +38,17 @@ TanStack Router with file-based routing. Route files live in `src/routes/`. The 
 ### Design System
 
 Two variable fonts loaded from Google Fonts in `src/styles.css`:
+
 - **Fraunces** (serif, weight 300–900) — used via `.font-display` utility class
 - **Archivo** (sans-serif, weight 100–900) — default body font (`--font-sans`)
 
 Brand color tokens defined as CSS custom properties in `:root` using oklch:
+
 - `--ink`, `--cream`, `--paper`, `--terracotta` (primary), `--clay`, `--sage`, `--mustard` (accent)
 - Order status colors: `--status-pending`, `--status-paid`, `--status-packed`, `--status-shipped`, `--status-delivered`
 
 Custom utility classes defined in `@layer utilities` in `src/styles.css`:
+
 - `.font-display`, `.bg-gradient-warm`, `.bg-gradient-sunset`, `.bg-gradient-ink`
 - `.shadow-soft`, `.shadow-lift`, `.shadow-glow`, `.grain`
 - `.animate-float`, `.animate-pop`, `.animate-pulse-dot`

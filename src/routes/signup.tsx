@@ -1,20 +1,33 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute, Link, redirect, useRouter } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
-import { toast } from "sonner";
-import { UserPlus, Check } from "lucide-react";
-import { useAuth } from "@/lib/auth";
+import { Logo } from "@/components/landing/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Logo } from "@/components/landing/Logo";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { signup } from "@/lib/supabase/auth.server";
+
+export const Route = createFileRoute("/signup")({
+  beforeLoad: ({ context }) => {
+    const ctx = context as { user: unknown; profile: unknown };
+    if (ctx.user && ctx.profile) {
+      throw redirect({ to: "/dashboard" });
+    }
+    if (ctx.user && !ctx.profile) {
+      throw redirect({ to: "/onboarding" });
+    }
+  },
+  component: SignupPage,
+});
 
 const signupSchema = z
   .object({
-    email: z.string().email("Invalid email address"),
+    email: z.string().email("Please enter a valid email"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
   })
@@ -25,14 +38,10 @@ const signupSchema = z
 
 type SignupForm = z.infer<typeof signupSchema>;
 
-export const Route = createFileRoute("/signup")({
-  component: SignupPage,
-});
-
 function SignupPage() {
-  const { signUp } = useAuth();
+  const router = useRouter();
+  const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const {
     register,
@@ -43,47 +52,47 @@ function SignupPage() {
   });
 
   const onSubmit = async (data: SignupForm) => {
+    setServerError("");
     setLoading(true);
+
     try {
-      await signUp(data.email, data.password);
-      setSubmitted(true);
-      toast.success("Account created! Check your email to verify.");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to create account");
+      const result = await signup({ data: { email: data.email, password: data.password } });
+      if (!result.success) {
+        setServerError(result.error);
+        return;
+      }
+      await router.invalidate();
+      await router.navigate({ to: "/onboarding" });
+    } catch {
+      setServerError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="grain flex min-h-screen items-center justify-center bg-gradient-warm px-6">
-      <Card className="w-full max-w-md border-border/50 bg-paper p-8 shadow-lift">
-        <div className="mb-8 flex flex-col items-center">
-          <Link to="/">
-            <Logo className="mb-3 h-10 w-10" />
+    <div className="flex min-h-screen items-center justify-center bg-cream px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        <div className="mb-8 text-center">
+          <Link to="/" className="inline-flex items-center gap-2">
+            <Logo className="h-8 w-8" />
+            <span className="text-2xl font-black tracking-normal">OrderBase</span>
           </Link>
-          <h1 className="font-display text-3xl font-semibold text-ink">Create your account</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Get started with Orderbase</p>
         </div>
 
-        {submitted ? (
-          <div className="flex flex-col items-center gap-3 py-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sage/20">
-              <Check className="h-6 w-6 text-sage" />
-            </div>
-            <p className="text-center text-sm text-muted-foreground">
-              We&apos;ve sent a verification link to your email. Please check your inbox to activate
-              your account.
-            </p>
-            <Link
-              to="/login"
-              className="mt-2 text-sm font-medium text-primary hover:underline"
-            >
-              Go to sign in
-            </Link>
-          </div>
-        ) : (
-          <>
+        <Card className="shadow-lift">
+          <CardHeader className="text-center">
+            <CardTitle className="font-display text-2xl font-semibold">
+              Create your account
+            </CardTitle>
+            <CardDescription>Get started with Orderbase in seconds</CardDescription>
+          </CardHeader>
+          <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -92,11 +101,9 @@ function SignupPage() {
                   type="email"
                   placeholder="you@example.com"
                   {...register("email")}
-                  className="rounded-lg"
+                  disabled={loading}
                 />
-                {errors.email && (
-                  <p className="text-sm text-destructive">{errors.email.message}</p>
-                )}
+                {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
               </div>
 
               <div className="space-y-2">
@@ -106,7 +113,7 @@ function SignupPage() {
                   type="password"
                   placeholder="••••••••"
                   {...register("password")}
-                  className="rounded-lg"
+                  disabled={loading}
                 />
                 {errors.password && (
                   <p className="text-sm text-destructive">{errors.password.message}</p>
@@ -120,23 +127,22 @@ function SignupPage() {
                   type="password"
                   placeholder="••••••••"
                   {...register("confirmPassword")}
-                  className="rounded-lg"
+                  disabled={loading}
                 />
                 {errors.confirmPassword && (
                   <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
                 )}
               </div>
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-full bg-primary text-primary-foreground shadow-glow"
-              >
+              {serverError && <p className="text-sm text-destructive">{serverError}</p>}
+
+              <Button type="submit" className="w-full rounded-full" disabled={loading}>
                 {loading ? (
-                  "Creating account..."
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <>
-                    Create account <UserPlus className="ml-1 h-4 w-4" />
+                    Create account
+                    <ArrowRight className="h-4 w-4" />
                   </>
                 )}
               </Button>
@@ -148,9 +154,9 @@ function SignupPage() {
                 Sign in
               </Link>
             </p>
-          </>
-        )}
-      </Card>
+          </CardContent>
+        </Card>
+      </motion.div>
     </div>
   );
 }

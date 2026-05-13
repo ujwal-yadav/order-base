@@ -29,7 +29,7 @@ export function Waitlist() {
       // if (!response.ok) throw new Error('Failed to join waitlist');
 
       // Simulated success for now
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to join waitlist. Please try again.");
@@ -81,9 +81,7 @@ export function Waitlist() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </button>
             </form>
-            {error && (
-              <p className="mt-3 text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
           </>
         ) : (
           <div className="mx-auto mt-10 inline-flex items-center gap-2 rounded-full bg-sage/20 px-5 py-3 text-sm text-cream">

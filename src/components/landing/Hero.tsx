@@ -31,6 +31,9 @@ export function Hero() {
             <a href="#who" className="transition-colors hover:text-foreground">
               Who it's for
             </a>
+            <a href="/login" className="transition-colors hover:text-foreground">
+              Sign in
+            </a>
           </div>
           <Link
             to={user ? "/dashboard" : "/login"}
