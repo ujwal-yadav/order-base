@@ -4,7 +4,7 @@ import { LogOut, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Logo } from "@/components/landing/Logo";
 import { Button } from "@/components/ui/button";
-import { logout } from "@/lib/supabase/auth.server";
+import { logout } from "@/lib/supabase/auth";
 import type { Profile } from "@/lib/supabase/types";
 
 export const Route = createFileRoute("/dashboard")({

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { signup } from "@/lib/supabase/auth.server";
+import { signup } from "@/lib/supabase/auth";
 
 export const Route = createFileRoute("/signup")({
   beforeLoad: ({ context }) => {

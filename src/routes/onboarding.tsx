@@ -9,7 +9,7 @@ import { Logo } from "@/components/landing/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { upsertProfile } from "@/lib/supabase/auth.server";
+import { upsertProfile } from "@/lib/supabase/auth";
 
 export const Route = createFileRoute("/onboarding")({
   beforeLoad: ({ context }) => {

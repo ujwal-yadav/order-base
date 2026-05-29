@@ -1,5 +1,5 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-import { getSession, getProfile } from "@/lib/supabase/auth.server";
+import { getSession, getProfile } from "@/lib/supabase/auth";
 
 import appCss from "../styles.css?url";
 
