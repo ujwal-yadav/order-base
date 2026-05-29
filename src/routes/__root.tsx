@@ -27,13 +27,17 @@ function NotFoundComponent() {
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
-    const { user } = await getSession();
-    let profile = null;
-    if (user) {
-      const result = await getProfile();
-      profile = result.profile;
+    try {
+      const { user } = await getSession();
+      let profile = null;
+      if (user) {
+        const result = await getProfile();
+        profile = result.profile;
+      }
+      return { user, profile };
+    } catch {
+      return { user: null, profile: null };
     }
-    return { user, profile };
   },
   head: () => ({
     meta: [
