@@ -9,12 +9,12 @@ export function Hero() {
   const { user } = useAuth();
 
   return (
-    <section className="relative overflow-hidden grain">
+    <section className="relative min-h-screen overflow-hidden grain">
       <div className="absolute inset-0 bg-gradient-warm" />
       <div className="absolute -top-32 -right-32 h-[480px] w-[480px] rounded-full bg-gradient-sunset opacity-25 blur-3xl" />
       <div className="absolute -bottom-40 -left-20 h-[420px] w-[420px] rounded-full bg-mustard/30 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-10 pb-24 lg:pt-8 lg:pb-32">
+      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 pt-10 pb-24 lg:pt-8 lg:pb-32">
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Logo className="h-8 w-8" />
@@ -44,7 +44,7 @@ export function Hero() {
           </Link>
         </nav>
 
-        <div className="mt-16 grid gap-12 lg:mt-24 lg:grid-cols-[1.05fr_1fr] lg:items-center">
+        <div className="my-auto grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-center">
           <div>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
