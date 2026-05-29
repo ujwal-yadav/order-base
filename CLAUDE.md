@@ -21,8 +21,8 @@ npx tsc --noEmit     # Type-check without emitting
 
 - **Framework**: TanStack Start (React 19 + TanStack Router, SSR-capable)
 - **Styling**: Tailwind CSS v4 (no `tailwind.config` — config lives in `src/styles.css` via `@theme inline`)
-- **Build**: Vite 7, configured via `@lovable.dev/vite-tanstack-config` (wraps TanStack Start plugin, React, Tailwind, tsconfig paths, and Cloudflare Workers support — do **not** add these plugins manually in `vite.config.ts`)
-- **Deploy target**: Cloudflare Workers (see `wrangler.jsonc`)
+- **Build**: Vite 7, configured via `@lovable.dev/vite-tanstack-config` (wraps TanStack Start plugin, React, Tailwind, tsconfig paths — do **not** add these plugins manually in `vite.config.ts`)
+- **Deploy target**: Vercel (via Nitro)
 - **UI components**: shadcn/ui (new-york style, `components.json`). Add components with `npx shadcn@latest add <name>`.
 - **Icons**: lucide-react
 - **Animations**: framer-motion

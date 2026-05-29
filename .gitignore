@@ -19,9 +19,11 @@ dist-ssr
 # Vercel
 .vercel
 
-# Wrangler / Cloudflare
+# Bun
+bun.lockb
+
+# Wrangler
 .wrangler/
-.dev.vars
 
 # Editor directories and files
 .vscode/*
